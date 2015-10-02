@@ -7,8 +7,6 @@ import time
 import pickle
 import os.path
 import scipy.io
-import scipy.io.wavfile
-from scikits.audiolab import play
 import theanets
 import pickle
 import numpy as np
@@ -16,7 +14,6 @@ import numpy as np
 import random
 #sd.default.samplerate = 44100
 #sd.default.channels = 1
-import matplotlib.pyplot as plt
 #from matplotlib.pyplot import plot, show, imshow
 
 import liblo
@@ -146,15 +143,13 @@ while(running):
     
     # out is the guts of a fourier transform
     # inverse fft won't work well
-    buf = np.zeros(window_size)
-    # mag only positive!
-    buf[0:swin_size] += 500*np.abs(out[0:swin_size])
 
     # sample and spam
     sample = out[sampled]
     if lasts == None:
         lasts = sample
-    l = (sample - lasts).tolist()
+    l = np.abs(sample - lasts).tolist()
+    #l = sample.tolist()
     #print l
     liblo.send(target, "/fft/sbins", *l)
     print l

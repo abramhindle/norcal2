@@ -25,25 +25,58 @@ gkamp15 init 0
 gkamp16 init 0
 
 
-
+gkport init 1/90
 
     instr 1
-          a1  oscili  gkamp1, 1 * 40, 1           
-          a2  oscili  gkamp2, 2 * 40, 1           
-          a3  oscili  gkamp3, 3 * 40, 1           
-          a4  oscili  gkamp4, 4 * 40, 1           
-          a5  oscili  gkamp5, 5 * 40, 1           
-          a6  oscili  gkamp6, 6 * 40, 1           
-          a7  oscili  gkamp7, 7 * 40, 1           
-          a8  oscili  gkamp8, 8 * 40, 1           
-          a9  oscili  gkamp9, 9 * 40, 1               
-          a10  oscili gkamp10,10* 40, 1           
-          a11  oscili gkamp11,11* 40, 1           
-          a12  oscili gkamp12,12* 40, 1           
-          a13  oscili gkamp13,13* 40, 1           
-          a14  oscili gkamp14,14* 40, 1           
-          a15  oscili gkamp15,15* 40, 1           
-          a16  oscili gkamp16,16* 40, 1           
+        kf1 init 0
+        kf2 init 0
+        kf3 init 0
+        kf4 init 0
+        kf5 init 0
+        kf6 init 0
+        kf7 init 0
+        kf8 init 0
+        kf9 init 0
+        kf10 init 0
+        kf11 init 0
+        kf12 init 0
+        kf13 init 0
+        kf14 init 0
+        kf15 init 0
+        kf16 init 0
+        kf1  portk gkamp1, gkport
+        kf2  portk gkamp2, gkport
+        kf3  portk gkamp3, gkport
+        kf4  portk gkamp4, gkport
+        kf5  portk gkamp5, gkport
+        kf6  portk gkamp6, gkport
+        kf7  portk gkamp7, gkport
+        kf8  portk gkamp8, gkport
+        kf9  portk gkamp9, gkport
+        kf10 portk gkamp10, gkport
+        kf11 portk gkamp11, gkport
+        kf12 portk gkamp12, gkport
+        kf13 portk gkamp13, gkport
+        kf14 portk gkamp14, gkport
+        kf15 portk gkamp15, gkport
+        kf16 portk gkamp16, gkport
+        
+          a1  oscili  kf1, 1 * 40, 1           
+          a2  oscili  kf2, 2 * 40, 1           
+          a3  oscili  kf3, 3 * 40, 1           
+          a4  oscili  kf4, 4 * 40, 1           
+          a5  oscili  kf5, 5 * 40, 1           
+          a6  oscili  kf6, 6 * 40, 1           
+          a7  oscili  kf7, 7 * 40, 1           
+          a8  oscili  kf8, 8 * 40, 1           
+          a9  oscili  kf9, 9 * 40, 1               
+          a10  oscili kf10,10* 40, 1           
+          a11  oscili kf11,11* 40, 1           
+          a12  oscili kf12,12* 40, 1           
+          a13  oscili kf13,13* 40, 1           
+          a14  oscili kf14,14* 40, 1           
+          a15  oscili kf15,15* 40, 1           
+          a16  oscili kf16,16* 40, 1           
           aout = a1 +  a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9 + a10 + a11 + a12 + a13 + a14 + a15 + a16
           outs aout, aout
     endin
