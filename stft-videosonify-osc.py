@@ -203,22 +203,22 @@ while(running):
     ckey = cv2.waitKey(1) & 0xFF
     if ckey==27:
         break
-    if ckey==ord('P'):
+    elif ckey==ord('P'):
         phi *= 1.1
         print phi
-    if ckey==ord('p'):
+    elif ckey==ord('p'):
         phi *= 0.9
         print phi
-    if ckey==ord('Z'):
+    elif ckey==ord('Z'):
         zeros += 1
         print zeros
-    if ckey==ord('z'):
+    elif ckey==ord('z'):
         zeros = max(0,zeros - 1)
         print zeros
-    if ckey==ord('L'):
+    elif ckey==ord('L'):
         b += 0.1
         print b
-    if ckey==ord('l'):
+    elif ckey==ord('l'):
         b -= 0.1
         print b
 
@@ -229,29 +229,5 @@ while(running):
 cv2.destroyAllWindows()
 
 
-#idea
-# for each frame generate interpolate spectra
-# for each frame run 1024 sinusoids and sum them manually but maintain phase?
-# invent a phase vector that we add to each time to ensure that the next window has appropriate phase?
 
 
-
-
-
-# outwav = scikits.audiolab.Sndfile("wout.wav",mode='w',format=scikits.audiolab.Format(),channels=1,samplerate=22050)
-# output = np.zeros(735*(2+len(outs)))
-# for i in range(0,len(outs)):
-#     #audio = outs[i]*window
-#     start = (i + 1)*alen
-#     end = start + alen
-#     rstart = start + alen/2 + (random.random() - 0.5) * (alen/10) #int(start - (alen/2) + alen*random.random())
-#     rend = rstart + alen
-#     output[start:end] += outs[i][0]
-#     output[rstart:rend] += outs[i][1]
-#     output[(rstart-alen):(rend-alen)] += outs[i][1]
-# 
-# outwav.write_frames(output)
-# outwav.sync()
-# 
-cv2.destroyAllWindows()
-#writer.release()
