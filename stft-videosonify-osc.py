@@ -152,7 +152,10 @@ while(running):
     overti = overti
     outhoriz = np.abs(horiz-ohori)[0,outi].tolist()
     outverti = np.abs(verti-overti)[outi,0].tolist()
-
+    # zero out values due to zero setting
+    for i in range(len(outverti)-zeros,len(outverti)):
+        outverti[i] = 0.0
+        outhoriz[i] = 0.0
     sendOSC("/webcam/horiz",*outhoriz )
     sendOSC("/webcam/vert", *outverti )
 
