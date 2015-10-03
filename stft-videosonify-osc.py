@@ -23,7 +23,9 @@ parser = argparse.ArgumentParser(description='Do deep learning and pump into osc
 parser.add_argument('-c',default=0, help='Camera')
 parser.add_argument('-osc1', dest='osc1', default=7770,help="OSC Port")
 parser.add_argument('-osc2', dest='osc2', default=7771,help="OSC Port")
-
+parser.add_argument('-a', dest='a', default=1.0,help="A/phi multiplier")
+parser.add_argument('-b', dest='b', default=0.0,help="b offset")
+parser.add_argument('-z', dest='z', default=0,help="b offset")
 args = parser.parse_args()
 
 cap = cv2.VideoCapture(int(args.c))
@@ -116,9 +118,9 @@ sampled = np.array([1,2,3,4,6,8,10,12,14,16,20,24,32,64,128,256])
 lasts = None
 #cv2.namedWindow("grey", cv2.cv.CV_WINDOW_NORMAL)
 cv2.namedWindow("scaled", cv2.cv.CV_WINDOW_NORMAL)
-phi = 1.0
-b = 0.0
-
+phi = float(args.a)
+b = float(args.b)
+zeros = int(args.z)
 
 
 #fourcc = cv2.cv.FOURCC(*'XVID')
@@ -148,8 +150,11 @@ while(running):
         overti = verti
     ohori = horiz
     overti = overti
-    sendOSC("/webcam/horiz",*(np.abs(horiz-ohori)[0,outi].tolist()) )
-    sendOSC("/webcam/vert", *(np.abs(verti-overti)[outi,0].tolist()) )
+    outhoriz = np.abs(horiz-ohori)[0,outi].tolist()
+    outverti = np.abs(verti-overti)[outi,0].tolist()
+
+    sendOSC("/webcam/horiz",*outhoriz )
+    sendOSC("/webcam/vert", *outverti )
 
     cv2.imshow("horiz",cv2.resize(horiz,(256,64)))
     cv2.imshow("vert",cv2.resize(verti,(64,256)))
@@ -201,6 +206,12 @@ while(running):
     if ckey==ord('p'):
         phi *= 0.9
         print phi
+    if ckey==ord('Z'):
+        zeros += 1
+        print zeros
+    if ckey==ord('z'):
+        zeros = max(0,zeros - 1)
+        print zeros
     if ckey==ord('L'):
         b += 0.1
         print b
