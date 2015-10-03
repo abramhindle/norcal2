@@ -49,7 +49,7 @@ target2 = liblo.Address(args.osc2)
 
 def sendOSC(path,*args):
     liblo.send(target1, path, *args)
-    liblo.send(target1, path, *args)
+    liblo.send(target2, path, *args)
 
 
 
