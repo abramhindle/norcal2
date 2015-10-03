@@ -9,5 +9,5 @@
 #        jack_connect csound6:output4 system:playback_2 ; \
 #) &
 
-csound -dm6 -+rtaudio=jack -i devaudio -o devaudio -b 400 -B 2048 -L stdin fft.orc fft.sco
+csound -dm6 -+rtaudio=jack  -+jack_client=meanHist -i devaudio -o devaudio -b 400 -B 2048 -L stdin fft.orc fft.sco
 
