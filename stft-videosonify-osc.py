@@ -10,11 +10,7 @@ import scipy.io
 import theanets
 import pickle
 import numpy as np
-#import sounddevice as sd
 import random
-#sd.default.samplerate = 44100
-#sd.default.channels = 1
-#from matplotlib.pyplot import plot, show, imshow
 
 import liblo
 import argparse
@@ -30,13 +26,6 @@ args = parser.parse_args()
 
 cap = cv2.VideoCapture(int(args.c))
 
-# if len(sys.argv) < 2:
-#     print "Opening vtest.avi"
-#     cap = cv2.VideoCapture("vtest.avi")
-# else:
-#     print "Opening %s" % sys.argv[1]
-#     cap = cv2.VideoCapture(sys.argv[1])
-# 
 running = True
 
 frames = []
@@ -163,11 +152,6 @@ while(running):
     cv2.imshow("vert",cv2.resize(verti,(64,256)))
 
 
-    #cv2.imshow('grey',grey)    
-    #if writer == None:
-    #    (myw,myh,_) = frame.shape
-    #    writer = cv2.VideoWriter("webcam.avi",fourcc,30,(myh,myw),1)
-    #writer.write(frame)
     scaled = scaled.astype(np.float32)
     scaled /= 255.0
     #scaled = (1.0/phi)*(scaled/(1.0/1.0))**0.5
