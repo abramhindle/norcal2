@@ -98,7 +98,7 @@ outi.reverse()
 outi = np.array(outi)
 ohori = None
 overti = None
-
+diff = False
 while(running):
     ret, frame = cap.read()
     if (not ret):
@@ -107,17 +107,31 @@ while(running):
     grey = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
     scaled = cv2.resize(grey, (SW,SH))
 
+    scaled = scaled.astype(np.float32)
+    scaled /= 255.0
+    #scaled = (1.0/phi)*(scaled/(1.0/1.0))**0.5
+    scaled = phi*scaled + b
+    scaled[scaled < 0.0] = 0.0
+    cv2.imshow('scaled',scaled)
+
     # stripes
     horiz = cv2.resize(scaled, (16, 1)) 
     vert  = cv2.resize(scaled, (1,16))
-    verti   = vert/(10000.0*255.0)
-    horizi  = horiz/(10000.0*255.0)
+    verti   = vert/(10000.0)
+    horizi  = horiz/(10000.0)
 
     if (ohori == None):
         ohori = horizi
         overti = verti
-    outhoriz = (np.abs(horizi-ohori)[0,outi] ).tolist()
-    outverti = (np.abs(verti-overti)[outi,0]).tolist()
+    #outhoriz = (np.abs(horizi-ohori)[0,outi] ).tolist()
+    #outverti = (np.abs(verti-overti)[outi,0]).tolist()
+    if not diff:
+        outhoriz = (np.abs(horizi)[0,outi] ).tolist()
+        outverti = (np.abs(verti)[outi,0]).tolist()
+    else:
+        outhoriz = (np.abs(horizi - ohori)[0,outi] ).tolist()
+        outverti = (np.abs(verti - overti)[outi,0]).tolist()
+
 
     ohori = horizi
     overti = verti
@@ -134,12 +148,6 @@ while(running):
     cv2.imshow("vert",cv2.resize(vert,(64,256)))
 
 
-    scaled = scaled.astype(np.float32)
-    scaled /= 255.0
-    #scaled = (1.0/phi)*(scaled/(1.0/1.0))**0.5
-    scaled = phi*scaled + b
-    scaled[scaled < 0.0] = 0.0
-    cv2.imshow('scaled',scaled)
     
     data = np.concatenate(old_frames + [scaled.flatten()]) 
     smaller = cv2.resize(grey, (SW/2,SH/2))
@@ -185,6 +193,11 @@ while(running):
     elif ckey==ord('l'):
         b -= 0.1
         print b
+    elif ckey==ord('D'):
+        diff = True
+    elif ckey==ord('d'):
+        diff = False
+
 
     frames += 1
     if frames % 30 == 0:
