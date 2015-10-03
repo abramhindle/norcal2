@@ -94,6 +94,7 @@ outi.reverse()
 outi = np.array(outi)
 ohori = None
 overti = None
+
 while(running):
     ret, frame = cap.read()
     if (not ret):
@@ -149,8 +150,6 @@ while(running):
         if lasts == None:
             lasts = sample
         l = np.abs(sample - lasts).tolist()
-        #l = sample.tolist()
-        #print l
         sendOSC("/fft/sbins", *l)
         print l
         lasts = sample
