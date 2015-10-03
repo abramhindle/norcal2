@@ -17,6 +17,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Do deep learning and pump into osc')
 parser.add_argument('-c',default=0, help='Camera')
+parser.add_argument('-i',default=None, help='Input File')
 parser.add_argument('-osc1', dest='osc1', default=7770,help="OSC Port")
 parser.add_argument('-osc2', dest='osc2', default=7771,help="OSC Port")
 parser.add_argument('-a', dest='a', default=1.0,help="A/phi multiplier")
@@ -24,7 +25,10 @@ parser.add_argument('-b', dest='b', default=0.0,help="b offset")
 parser.add_argument('-z', dest='z', default=0,help="b offset")
 args = parser.parse_args()
 
-cap = cv2.VideoCapture(int(args.c))
+if args.i == None:
+    cap = cv2.VideoCapture(int(args.c))
+else:
+    cap = cv2.VideoCapture(args.i)
 
 running = True
 
@@ -109,14 +113,17 @@ while(running):
     if (ohori == None):
         ohori = horiz
         overti = verti
-    ohori = horiz
-    overti = overti
     outhoriz = np.abs(horiz-ohori)[0,outi].tolist()
     outverti = np.abs(verti-overti)[outi,0].tolist()
+
+    ohori = horiz
+    overti = overti
+
     # zero out values due to zero setting
     for i in range(len(outverti)-zeros,len(outverti)):
         outverti[i] = 0.0
         outhoriz[i] = 0.0
+    print outhoriz
     sendOSC("/webcam/horiz",*outhoriz )
     sendOSC("/webcam/vert", *outverti )
 
@@ -151,7 +158,7 @@ while(running):
             lasts = sample
         l = np.abs(sample - lasts).tolist()
         sendOSC("/fft/sbins", *l)
-        print l
+        print sum(l)
         lasts = sample
 
     ckey = cv2.waitKey(1) & 0xFF
@@ -164,7 +171,7 @@ while(running):
         phi *= 0.9
         print phi
     elif ckey==ord('Z'):
-        zeros += 1
+        zeros = min(16,zeros+1)
         print zeros
     elif ckey==ord('z'):
         zeros = max(0,zeros - 1)
