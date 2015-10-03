@@ -28,6 +28,7 @@ gkamp16 init 0
 gkport init 1/90
 
     instr 1
+        ifn = p4
         kf1 init 0
         kf2 init 0
         kf3 init 0
@@ -61,22 +62,22 @@ gkport init 1/90
         kf15 portk gkamp15, gkport
         kf16 portk gkamp16, gkport
         
-          a1  oscili  kf1, 1 * 40, 1           
-          a2  oscili  kf2, 2 * 40, 1           
-          a3  oscili  kf3, 3 * 40, 1           
-          a4  oscili  kf4, 4 * 40, 1           
-          a5  oscili  kf5, 5 * 40, 1           
-          a6  oscili  kf6, 6 * 40, 1           
-          a7  oscili  kf7, 7 * 40, 1           
-          a8  oscili  kf8, 8 * 40, 1           
-          a9  oscili  kf9, 9 * 40, 1               
-          a10  oscili kf10,10* 40, 1           
-          a11  oscili kf11,11* 40, 1           
-          a12  oscili kf12,12* 40, 1           
-          a13  oscili kf13,13* 40, 1           
-          a14  oscili kf14,14* 40, 1           
-          a15  oscili kf15,15* 40, 1           
-          a16  oscili kf16,16* 40, 1           
+          a1  oscili  kf1, 1 * 40, ifn           
+          a2  oscili  kf2, 2 * 40, ifn           
+          a3  oscili  kf3, 3 * 40, ifn           
+          a4  oscili  kf4, 4 * 40, ifn           
+          a5  oscili  kf5, 5 * 40, ifn           
+          a6  oscili  kf6, 6 * 40, ifn           
+          a7  oscili  kf7, 7 * 40, ifn           
+          a8  oscili  kf8, 8 * 40, ifn           
+          a9  oscili  kf9, 9 * 40, ifn               
+          a10  oscili kf10,10* 40, ifn           
+          a11  oscili kf11,11* 40, ifn           
+          a12  oscili kf12,12* 40, ifn           
+          a13  oscili kf13,13* 40, ifn           
+          a14  oscili kf14,14* 40, ifn           
+          a15  oscili kf15,15* 40, ifn           
+          a16  oscili kf16,16* 40, ifn           
           aout = a1 +  a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9 + a10 + a11 + a12 + a13 + a14 + a15 + a16
           outs aout, aout
     endin

@@ -158,7 +158,8 @@ while(running):
     del old_frames[0]
     old_frames.append(smaller.flatten())
 
-    deep_learnings = frames % 3 != 0
+    deep_learnings = frames % 5 != 0
+    deep_learnings = True
     if (deep_learnings):
         out = brain.predict([data])[0]
         
