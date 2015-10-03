@@ -55,41 +55,12 @@ def gaussian_noise(inarr,mean=0.0,scale=1.0):
     return inarr + noise.reshape(inarr.shape)
 
 outs = []
-window_size = 2048
-#windowed = scipy.hanning(window_size)
-windowed = scipy.hamming(window_size)
-swin_size = window_size / 2 + 1
-alen = 1024 # audio length
-window = np.hanning(alen)
 frames = 0
-overlapsize = window_size - alen
-overlap = np.zeros(overlapsize)
-
-# crazy phase stuff
-
-flat_window = np.ones(window_size)
-olaps = int(math.ceil((window_size - alen))) # half
-flat_window[0:olaps] = np.arange(0,olaps)
-flat_window[olaps:window_size] = np.arange(0,olaps)[::-1]
-flat_window /= float(olaps-1)
-
-# debug
-# outwav.write_frames(windowed)
-
-last_phase = np.zeros(window_size)
-invwindow = 1.0/scipy.hamming(window_size)
-amax=0.5
 
 
-cones = np.zeros(swin_size-1).astype(complex) + complex(0,1)
-oldout = np.zeros(swin_size)
 
-phase = np.zeros(window_size) #np.random.normal(0,np.pi/2, window_size)
-# phase       = np.random.normal(np.pi/2,np.pi,window_size)
-# staticphase = np.random.normal(0,np.pi/2.0,window_size)
-staticphase = np.ones(window_size).astype(float32)*np.pi/2.0
 
-#phase = np.zeros(window_size)
+
 
 SW,SH = (64,64)
 old_half_frames = 4
