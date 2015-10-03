@@ -82,6 +82,8 @@ sampled = np.array([1,2,3,4,6,8,10,12,14,16,20,24,32,64,128,256])
 lasts = None
 #cv2.namedWindow("grey", cv2.cv.CV_WINDOW_NORMAL)
 cv2.namedWindow("scaled", cv2.cv.CV_WINDOW_NORMAL)
+cv2.namedWindow("horiz", cv2.cv.CV_WINDOW_NORMAL)
+cv2.namedWindow("vert", cv2.cv.CV_WINDOW_NORMAL)
 phi = float(args.a)
 b = float(args.b)
 zeros = int(args.z)
