@@ -21,6 +21,9 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Do deep learning and pump into osc')
 parser.add_argument('-c',default=0, help='Camera')
+parser.add_argument('-osc1', dest='osc1', default=7770,help="OSC Port")
+parser.add_argument('-osc2', dest='osc2', default=7771,help="OSC Port")
+
 args = parser.parse_args()
 
 cap = cv2.VideoCapture(int(args.c))
@@ -46,8 +49,8 @@ osr = 30720
 
 ret, frame = cap.read()
 
-target1 = liblo.Address(7770)
-target2 = liblo.Address(7771)
+target1 = liblo.Address(args.osc1)
+target2 = liblo.Address(args.osc2)
 
 def sendOSC(path,*args):
     liblo.send(target1, path, *args)
@@ -123,6 +126,12 @@ b = 0.0
 
 deep_learnings = True
 
+
+outi = [8,7,9,6,10,5,11,4,12,3,13,2,14,1,15,0]
+outi.reverse()
+outi = np.array(outi)
+ohori = None
+overti = None
 while(running):
     ret, frame = cap.read()
     if (not ret):
@@ -130,6 +139,22 @@ while(running):
         continue    
     grey = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
     scaled = cv2.resize(grey, (SW,SH))
+
+    # stripes
+    horiz = cv2.resize(scaled, (16, 1)) 
+    verti  = cv2.resize(scaled, (1,16))
+    if (ohori == None):
+        ohori = horiz
+        overti = verti
+    ohori = horiz
+    overti = overti
+    sendOSC("/webcam/horiz",*(np.abs(horiz-ohori)[0,outi].tolist()) )
+    sendOSC("/webcam/vert", *(np.abs(verti-overti)[outi,0].tolist()) )
+
+    cv2.imshow("horiz",cv2.resize(horiz,(256,64)))
+    cv2.imshow("vert",cv2.resize(verti,(64,256)))
+
+
     #cv2.imshow('grey',grey)    
     #if writer == None:
     #    (myw,myh,_) = frame.shape
@@ -149,7 +174,7 @@ while(running):
     del old_frames[0]
     old_frames.append(smaller.flatten())
 
-    deep_learnings = frames % 2 == 0
+    deep_learnings = frames % 3 != 0
     if (deep_learnings):
         out = brain.predict([data])[0]
         
