@@ -46,7 +46,14 @@ osr = 30720
 
 ret, frame = cap.read()
 
-target = liblo.Address(7770)
+target1 = liblo.Address(7770)
+target2 = liblo.Address(7771)
+
+def sendOSC(path,*args):
+    liblo.send(target1, path, *args)
+    liblo.send(target1, path, *args)
+
+
 
     
 def gaussian_noise(inarr,mean=0.0,scale=1.0):    
@@ -110,8 +117,11 @@ phi = 1.0
 b = 0.0
 
 
+
 #fourcc = cv2.cv.FOURCC(*'XVID')
 #writer = None 
+
+deep_learnings = True
 
 while(running):
     ret, frame = cap.read()
@@ -139,21 +149,23 @@ while(running):
     del old_frames[0]
     old_frames.append(smaller.flatten())
 
-    out = brain.predict([data])[0]
-    
-    # out is the guts of a fourier transform
-    # inverse fft won't work well
-
-    # sample and spam
-    sample = out[sampled]
-    if lasts == None:
+    deep_learnings = frames % 2 == 0
+    if (deep_learnings):
+        out = brain.predict([data])[0]
+        
+        # out is the guts of a fourier transform
+        # inverse fft won't work well
+        
+        # sample and spam
+        sample = out[sampled]
+        if lasts == None:
+            lasts = sample
+        l = np.abs(sample - lasts).tolist()
+        #l = sample.tolist()
+        #print l
+        sendOSC("/fft/sbins", *l)
+        print l
         lasts = sample
-    l = np.abs(sample - lasts).tolist()
-    #l = sample.tolist()
-    #print l
-    liblo.send(target, "/fft/sbins", *l)
-    print l
-    lasts = sample
 
     ckey = cv2.waitKey(1) & 0xFF
     if ckey==27:
