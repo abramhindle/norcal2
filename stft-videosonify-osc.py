@@ -44,8 +44,8 @@ osr = 30720
 
 ret, frame = cap.read()
 
-target1 = liblo.Address(args.osc1)
-target2 = liblo.Address(args.osc2)
+target1 = liblo.Address(int(args.osc1))
+target2 = liblo.Address(int(args.osc2))
 
 def sendOSC(path,*args):
     liblo.send(target1, path, *args)
@@ -109,26 +109,29 @@ while(running):
 
     # stripes
     horiz = cv2.resize(scaled, (16, 1)) 
-    verti  = cv2.resize(scaled, (1,16))
-    if (ohori == None):
-        ohori = horiz
-        overti = verti
-    outhoriz = np.abs(horiz-ohori)[0,outi].tolist()
-    outverti = np.abs(verti-overti)[outi,0].tolist()
+    vert  = cv2.resize(scaled, (1,16))
+    verti   = vert/(10000.0*255.0)
+    horizi  = horiz/(10000.0*255.0)
 
-    ohori = horiz
-    overti = overti
+    if (ohori == None):
+        ohori = horizi
+        overti = verti
+    outhoriz = (np.abs(horizi-ohori)[0,outi] ).tolist()
+    outverti = (np.abs(verti-overti)[outi,0]).tolist()
+
+    ohori = horizi
+    overti = verti
 
     # zero out values due to zero setting
     for i in range(len(outverti)-zeros,len(outverti)):
         outverti[i] = 0.0
         outhoriz[i] = 0.0
-    print outhoriz
+    print ("Horiz",outhoriz)
     sendOSC("/webcam/horiz",*outhoriz )
     sendOSC("/webcam/vert", *outverti )
 
     cv2.imshow("horiz",cv2.resize(horiz,(256,64)))
-    cv2.imshow("vert",cv2.resize(verti,(64,256)))
+    cv2.imshow("vert",cv2.resize(vert,(64,256)))
 
 
     scaled = scaled.astype(np.float32)
